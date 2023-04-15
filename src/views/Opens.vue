@@ -17,8 +17,8 @@
                 <p class="btn btn-primary mt-3" @click="getOpensListBySubmit">Submit</p>
             </form>
     
-            <p>Displaying Results for Id: {{ user_id }}</p>
-            <OpensList :opensListVar="opensList"/>
+            <p v-if="user_id.length>0">Displaying Results for Id: {{ user_id }}</p>
+            <OpensList v-if="user_id.length>0" :opensListVar="opensList"/>
         </div>
     </div>
     
