@@ -1,7 +1,11 @@
 <template>
   <div class="home">
     <h1>Welcome to the tracking pixel creator</h1>
-    <h3 class="mt-3">How to create and use a tracking pixel?</h3>
+
+    <router-link to='/create'><button type="button" class="btn btn-dark">Create a Tracking Pixel</button></router-link>
+    <br>
+    <router-link to='/opens'><button type="button" class="btn btn-dark">Watch Email Opens</button></router-link>
+    <!-- <h3 class="mt-3">How to create and use a tracking pixel?</h3>
     <p class="mt-3">1. Go to Create Pixel Id page</p>
     <p class="mt-3">2. Choose a password and create an id (save them both)</p>
     <p class="mt-3">3. Go to the Track Pixel Id page</p>
@@ -14,7 +18,7 @@
     </p>
     <p class="mt-3">5. Go to Track Your Tracking Pixel Id</p>
     <p class="mt-3">6. If you can't see your Id displayed there, enter it and your password and click submit</p>
-    <p class="mt-3">7. See who opened you email and at what time</p>
+    <p class="mt-3">7. See who opened you email and at what time</p> -->
   </div>
 </template>
 
@@ -29,3 +33,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .btn {
+    margin:20px 0;
+    padding: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+</style>

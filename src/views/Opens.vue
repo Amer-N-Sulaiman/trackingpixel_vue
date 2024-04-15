@@ -2,23 +2,37 @@
   <h1>See Who Opened Your Emails</h1>
   
   <div class="container">
-    <div class="row text-center">
+    <div class="row">
         <div id="mainCol" class="col-lg-6 col-md-8 col-xs-11r">
-            <h2>Enter an Id and corresponding password below to list the opens</h2>
-            <form>
-                <div class="form-group">
-                    <label for="IdInput">Id</label>
-                    <input v-model="temp_user_id" class="form-control" id="IdInput" placeholder="Enter You Id">
+            <div class="form-card card">
+                <div class="card-header">
+                    <h5>Fill the following fields</h5>
+
                 </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input v-model="temp_password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                </div>
-                <p class="btn btn-primary mt-3" @click="getOpensListBySubmit">Submit</p>
-            </form>
+                <div style="height:25px"></div>
+                <form class="creds-form text-left">
+                    <div class="form-group">
+                        <label style="float:left" for="IdInput">Tracking Pixel Link</label>
+                        <input v-model="temp_user_id" class="form-control" id="IdInput" placeholder="Tracking Pixel Link">
+                    </div>
+                    <div class="form-group">
+                        <label style="float:left;margin-top:10px" for="exampleInputPassword1">Password</label>
+                        <input v-model="temp_password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    <p class="btn btn-primary mt-3" @click="getOpensListBySubmit">Submit</p>
+                </form>
+            </div>
     
-            <p v-if="user_id.length>0">Displaying Results for Id: {{ user_id }}</p>
-            <OpensList v-if="user_id.length>0" :opensListVar="opensList"/>
+            <div class="card" v-if="user_id.length>0">
+                <p class="card-header">
+                    Displaying results for the following tracking pixel
+                </p>
+                
+                 <br> 
+                 https://amersulaimantrackingpixel.pythonanywhere.com/{{user_id}}/[recepient_name]/getpixel.png
+                 <div style="height:15px"></div>
+            </div>
+            <OpensList class="mt-3" v-if="user_id.length>0&&opensList.length>0" :opensListVar="opensList"/>
         </div>
     </div>
     
@@ -86,6 +100,11 @@ export default {
             return data
         },
         async getOpensListBySubmit(){
+            this.temp_user_id = this.temp_user_id.split('/')[3]
+            console.log('****************')
+            console.log(this.temp_user_id)
+            console.log('****************')
+
             this.$cookies.set('user_id', this.temp_user_id)
             this.$cookies.set('password', this.temp_password)
             console.log('password incoming***********')
@@ -134,4 +153,16 @@ export default {
     #mainCol {
         margin: 0 auto;
     }
+
+    .creds-form{
+        margin: 0 25px;
+    }
+    
+
+    .form-card {
+        /* padding: 30px; */
+        margin: 30px;
+    }
+
+    
 </style>
