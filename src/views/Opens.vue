@@ -32,7 +32,13 @@
                  https://amersulaimantrackingpixel.pythonanywhere.com/{{user_id}}/[recepient_name]/getpixel.png
                  <div style="height:15px"></div>
             </div>
-            <OpensList class="mt-3" v-if="user_id.length>0&&opensList.length>0" :opensListVar="opensList"/>
+            <OpensList class="mt-3" v-if="!fetchingOpens&&user_id.length>0&&opensList.length>0" :opensListVar="opensList"/>
+            <div v-if="fetchingOpens">
+                <div class="spinner-border text-dark" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                Fetching Opens ...
+            </div>
         </div>
     </div>
     
@@ -54,7 +60,8 @@ export default {
             opensList: [],
             submitted: false,
             error: false,
-            errorMessage: ''
+            errorMessage: '',
+            fetchingOpens: false,
         }
     },
     computed: {
@@ -86,9 +93,11 @@ export default {
                 headers: { "Content-Type": "application/json" },
                 body: body
             };
+            this.fetchingOpens = true
             const response = await fetch("https://amersulaimantrackingpixel.pythonanywhere.com/opens", requestOptions);
             const data = await response.json();
-            console.log(data)
+            this.fetchingOpens = false
+
             if (data.e===undefined){
                 this.error = false
             } else {
@@ -101,25 +110,20 @@ export default {
         },
         async getOpensListBySubmit(){
             this.temp_user_id = this.temp_user_id.split('/')[3]
-            console.log('****************')
-            console.log(this.temp_user_id)
-            console.log('****************')
-
+            
             this.$cookies.set('user_id', this.temp_user_id)
             this.$cookies.set('password', this.temp_password)
-            console.log('password incoming***********')
-            console.log(this.temp_user_id)
-            console.log(this.temp_password)
+            
             const body = JSON.stringify({ 
                 "user_id": this.temp_user_id,
                 "password": this.temp_password 
             })
-            console.log(body)
             const requestOptions = {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: body
             };
+            this.fetchingOpens = true
             fetch("https://amersulaimantrackingpixel.pythonanywhere.com/opens", requestOptions).then((response)=>{
                 response.json().then((data)=>{
                     console.log(data)
@@ -128,8 +132,10 @@ export default {
                     } else {
                         this.error = true
                         this.errorMessage = data.e
+                        this.fetchingOpens = false
                         return []
                     }
+                    this.fetchingOpens = false
                     this.opensList = data
                     return data
                 })
